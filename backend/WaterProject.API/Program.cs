@@ -11,12 +11,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<WaterDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("WaterConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WaterConnection")));
 
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactAppBlah",
     policy => {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:3000", "https://yellow-pebble-08b19f41e.6.azurestaticapps.net")
             .AllowAnyMethod()
             .AllowAnyHeader();
     }));
