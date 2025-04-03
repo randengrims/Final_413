@@ -30,7 +30,7 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
     loadProjects();
   }, [pageSize, pageNum, selectedCategories]);
 
-  if (loading) return <p>Loading projects...</p>;
+  if (loading) return <p>Loading books...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
@@ -41,19 +41,19 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
           <div className="card-body">
             <ul className="list-unstyled">
               <li>
-                <strong>Project Type: </strong>
+                <strong>Book ID: </strong>
                 {p.projectType}
               </li>
               <li>
-                <strong>Regional Program: </strong>
+                <strong>Title: </strong>
                 {p.projectRegionalProgram}
               </li>
               <li>
-                <strong>Impact: </strong>
+                <strong>Author </strong>
                 {p.projectImpact} Individuals Served
               </li>
               <li>
-                <strong>Project Phase: </strong>
+                <strong>Publisher </strong>
                 {p.projectPhase}
               </li>
               <li>
