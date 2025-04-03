@@ -3513,24 +3513,31 @@
     ]
   },
   "packageFolders": {
-    "/Users/spencerhilton/.nuget/packages/": {}
+    "C:\\Users\\rande\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/spencerhilton/Desktop/WaterProject/backend/WaterProject.API/WaterProject.API.csproj",
+      "projectUniqueName": "C:\\Users\\rande\\Documents\\Randen's College Stuff\\IS 413\\TryWaterProject\\WaterProject\\backend\\WaterProject.API\\WaterProject.API.csproj",
       "projectName": "WaterProject.API",
-      "projectPath": "/Users/spencerhilton/Desktop/WaterProject/backend/WaterProject.API/WaterProject.API.csproj",
-      "packagesPath": "/Users/spencerhilton/.nuget/packages/",
-      "outputPath": "/Users/spencerhilton/Desktop/WaterProject/backend/WaterProject.API/obj/",
+      "projectPath": "C:\\Users\\rande\\Documents\\Randen's College Stuff\\IS 413\\TryWaterProject\\WaterProject\\backend\\WaterProject.API\\WaterProject.API.csproj",
+      "packagesPath": "C:\\Users\\rande\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\rande\\Documents\\Randen's College Stuff\\IS 413\\TryWaterProject\\WaterProject\\backend\\WaterProject.API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/spencerhilton/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\rande\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3548,7 +3555,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -3590,7 +3598,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
