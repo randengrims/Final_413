@@ -14,7 +14,7 @@ function CategoryFilter({
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          'https://waterproject-hilton-backend.azurewebsites.net/Water/GetProjectTypes'
+          'https://localhost:5000/Book/GetBookTypes'
         );
         const data = await response.json();
         console.log('Fetched categories:', data);
@@ -36,7 +36,7 @@ function CategoryFilter({
 
   return (
     <div className="category-filter">
-      <h5>Book Genre</h5>
+      <h5>Book Category</h5>
       <div className="category-list">
         {categories.map((c) => (
           <div key={c} className="category-item">

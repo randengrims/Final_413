@@ -2,12 +2,12 @@
 
 namespace WaterProject.API.Data
 {
-    public class WaterDbContext : DbContext
+    public class BooksDbContext : DbContext
     {
-        public WaterDbContext(DbContextOptions<WaterDbContext> options) : base(options)
+        public BooksDbContext(DbContextOptions<BooksDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Project> Projects { get; set; }
+        public DbSet<Book> Books { get; set; }
     }
 }

@@ -10,8 +10,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<WaterDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("WaterConnection")));
+// ✅ Use BooksDbContext with environment-based database switching
+builder.Services.AddDbContext<BooksDbContext>(options =>
+{
+    var env = builder.Environment.EnvironmentName;
+    var config = builder.Configuration;
+
+    if (env == "Development")
+    {
+        // Use SQLite for local development
+        options.UseSqlite(config.GetConnectionString("DevConnection"));
+    }
+    else
+    {
+        // Use Azure SQL Server for production
+        options.UseSqlServer(config.GetConnectionString("AzureConnection"));
+    }
+});
 
 builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactAppBlah",
@@ -23,14 +38,17 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCors("AllowReactAppBlah");
+
+// ✅ Optional: Log the current environment for debugging
+app.Logger.LogInformation("Running in environment: {env}", app.Environment.EnvironmentName);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors("AllowReactAppBlah");
 
 app.UseHttpsRedirection();
 

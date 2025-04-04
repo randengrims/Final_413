@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Project } from '../types/Project';
-import { deleteProject, fetchProjects } from '../api/ProjectsAPI';
+import { Book } from '../types/Book';
+import { deleteBook, fetchProjects as fetchBooks } from '../api/BooksAPI';
 import Pagination from '../components/Pagination';
-import NewProjectForm from '../components/NewProjectForm';
-import EditProjectForm from '../components/EditProjectForm';
+import NewBookForm from '../components/NewBookForm';
+import EditBookForm from '../components/EditBookForm';
 
-const AdminProjectsPage = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+const AdminBooksPage = () => {
+  const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [showForm, setShowForm] = useState(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
 
   useEffect(() => {
-    const loadProjects = async () => {
+    const loadBooks = async () => {
       try {
-        const data = await fetchProjects(pageSize, pageNum, []);
-        setProjects(data.projects);
-        setTotalPages(Math.ceil(data.totalNumProjects / pageSize));
+        const data = await fetchBooks(pageSize, pageNum, []);
+        setBooks(data.books);
+        setTotalPages(Math.ceil(data.totalNumBooks / pageSize));
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -28,20 +28,20 @@ const AdminProjectsPage = () => {
       }
     };
 
-    loadProjects();
+    loadBooks();
   }, [pageSize, pageNum]);
 
-  const handleDelete = async (projectId: number) => {
+  const handleDelete = async (bookID: number) => {
     const confirmDelete = window.confirm(
-      'Are you sure you want to delete this project?'
+      'Are you sure you want to delete this book?'
     );
     if (!confirmDelete) return;
 
     try {
-      await deleteProject(projectId);
-      setProjects(projects.filter((p) => p.projectId !== projectId));
+      await deleteBook(bookID);
+      setBooks(books.filter((p) => p.bookID !== bookID));
     } catch (error) {
-      alert('Failed to delete project. Please try again.');
+      alert('Failed to delete book. Please try again.');
     }
   };
 
@@ -62,27 +62,27 @@ const AdminProjectsPage = () => {
       )}
 
       {showForm && (
-        <NewProjectForm
+        <NewBookForm
           onSuccess={() => {
             setShowForm(false);
-            fetchProjects(pageSize, pageNum, []).then((data) =>
-              setProjects(data.projects)
+            fetchBooks(pageSize, pageNum, []).then((data) =>
+              setBooks(data.books)
             );
           }}
           onCancel={() => setShowForm(false)}
         />
       )}
 
-      {editingProject && (
-        <EditProjectForm
-          project={editingProject}
+      {editingBook && (
+        <EditBookForm
+          project={editingBook}
           onSuccess={() => {
-            setEditingProject(null);
-            fetchProjects(pageSize, pageNum, []).then((data) =>
-              setProjects(data.projects)
+            setEditingBook(null);
+            fetchBooks(pageSize, pageNum, []).then((data) =>
+              setBooks(data.books)
             );
           }}
-          onCancel={() => setEditingProject(null)}
+          onCancel={() => setEditingBook(null)}
         />
       )}
 
@@ -90,35 +90,39 @@ const AdminProjectsPage = () => {
         <thead className="table-dark">
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Regional Program</th>
-            <th>Impact</th>
-            <th>Phase</th>
-            <th>Status</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>ISBN</th>
+            <th>Classification</th>
+            <th>Category</th>
+            <th>Page Count</th>
+            <th>Price</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {projects.map((p) => (
-            <tr key={p.projectId}>
-              <td>{p.projectId}</td>
-              <td>{p.projectName}</td>
-              <td>{p.projectType}</td>
-              <td>{p.projectRegionalProgram}</td>
-              <td>{p.projectImpact}</td>
-              <td>{p.projectPhase}</td>
-              <td>{p.projectFunctionalityStatus}</td>
+          {books.map((b) => (
+            <tr key={b.bookID}>
+              <td>{b.bookID}</td>
+              <td>{b.title}</td>
+              <td>{b.author}</td>
+              <td>{b.publisher}</td>
+              <td>{b.isbn}</td>
+              <td>{b.classification}</td>
+              <td>{b.category}</td>
+              <td>{b.pageCount ?? '-'}</td>
+              <td>{b.price !== undefined ? `$${b.price.toFixed(2)}` : '-'}</td>
               <td>
                 <button
                   className="btn btn-primary btn-sm w-100 mb-1"
-                  onClick={() => setEditingProject(p)}
+                  onClick={() => setEditingBook(b)}
                 >
                   Edit
                 </button>
                 <button
                   className="btn btn-danger btn-sm w-100"
-                  onClick={() => handleDelete(p.projectId)}
+                  onClick={() => handleDelete(b.bookID)}
                 >
                   Delete
                 </button>
@@ -142,4 +146,4 @@ const AdminProjectsPage = () => {
   );
 };
 
-export default AdminProjectsPage;
+export default AdminBooksPage;

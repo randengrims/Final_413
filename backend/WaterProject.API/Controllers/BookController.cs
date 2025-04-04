@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore; // ✅ Added for LINQ methods like ToListAsync
 using WaterProject.API.Data;
 
 namespace WaterProject.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class WaterController : ControllerBase
+    public class BookController : ControllerBase
     {
-        private WaterDbContext _waterContext;
+        private BooksDbContext _bookContext;
 
-        public WaterController(WaterDbContext temp) => _waterContext = temp;
+        public BookController(BooksDbContext temp) => _bookContext = temp;
 
         [HttpGet("AllProjects")]
-        public IActionResult GetProjects(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? projectTypes = null)
+        public IActionResult GetProjects(int pageSize = 10, int pageNum = 1, [FromQuery] List<string>? bookTypes = null)
         {
-            var query = _waterContext.Projects.AsQueryable();
+            var query = _bookContext.Books.AsQueryable();
 
-            if (projectTypes != null && projectTypes.Any())
+            if (bookTypes != null && bookTypes.Any())
             {
-                query = query.Where(p => projectTypes.Contains(p.ProjectType));
+                query = query.Where(b => bookTypes.Contains(b.Category));
             }
 
-            var totalNumProjects = query.Count();
+            var totalNumBooks = query.Count();
 
             var something = query
                 .Skip((pageNum-1) * pageSize)
@@ -31,62 +32,64 @@ namespace WaterProject.API.Controllers
 
             var someObject = new
             {
-                Projects = something,
-                TotalNumProjects = totalNumProjects
+                books = something,
+                TotalNumBooks = totalNumBooks
             };
 
             return Ok(someObject);
         }
 
-        [HttpGet("GetProjectTypes")]
-        public IActionResult GetProjectTypes ()
+        [HttpGet("GetBookTypes")]
+        public IActionResult GetBookTypes ()
         {
-            var projectTypes = _waterContext.Projects
-                .Select(p => p.ProjectType)
+            var bookTypes = _bookContext.Books
+                .Select(b => b.Category)
                 .Distinct()
                 .ToList();
 
-            return Ok(projectTypes);
+            return Ok(bookTypes);
         }
 
-        [HttpPost("AddProject")]
-        public IActionResult AddProject([FromBody] Project newProject)
+        [HttpPost("AddBook")]
+        public IActionResult AddBook([FromBody] Book newBook)
         {
-            _waterContext.Projects.Add(newProject);
-            _waterContext.SaveChanges();
-            return Ok(newProject);
+            _bookContext.Books.Add(newBook);
+            _bookContext.SaveChanges();
+            return Ok(newBook);
         }
 
-        [HttpPut("UpdateProject/{projectId}")]
-        public IActionResult UpdateProject(int projectId, [FromBody] Project updatedProject)
+        [HttpPut("UpdateProject/{bookId}")]
+        public IActionResult UpdateBook(int bookId, [FromBody] Book updatedBook)
         {
-            var existingProject = _waterContext.Projects.Find(projectId);
+            var existingBook = _bookContext.Books.Find(bookId);
 
-            existingProject.ProjectName = updatedProject.ProjectName;
-            existingProject.ProjectType = updatedProject.ProjectType;
-            existingProject.ProjectRegionalProgram = updatedProject.ProjectRegionalProgram;
-            existingProject.ProjectImpact = updatedProject.ProjectImpact;
-            existingProject.ProjectPhase = updatedProject.ProjectPhase;
-            existingProject.ProjectFunctionalityStatus = updatedProject.ProjectFunctionalityStatus;
+            existingBook.Title = updatedBook.Title;
+            existingBook.Author = updatedBook.Author;
+            existingBook.Publisher = updatedBook.Publisher;
+            existingBook.ISBN = updatedBook.ISBN;
+            existingBook.Classification = updatedBook.Classification;
+            existingBook.Category = updatedBook.Category;
+            existingBook.PageCount = updatedBook.PageCount;
+            existingBook.Price = updatedBook.Price;
 
-            _waterContext.Projects.Update(existingProject);
-            _waterContext.SaveChanges();
+            _bookContext.Books.Update(existingBook);
+            _bookContext.SaveChanges();
 
-            return Ok(existingProject);
+            return Ok(existingBook);
         }
 
-        [HttpDelete("DeleteProject/{projectId}")]
-        public IActionResult DeleteProject(int projectId)
+        [HttpDelete("DeleteProject/{BookId}")]
+        public IActionResult DeleteBook(int bookId)
         {
-            var project = _waterContext.Projects.Find(projectId);
+            var book = _bookContext.Books.Find(bookId);
 
-            if (project == null)
+            if (book == null)
             {
-                return NotFound(new {message = "Project not found"});
+                return NotFound(new {message = "Book not found"});
             }
 
-            _waterContext.Projects.Remove(project);
-            _waterContext.SaveChanges();
+            _bookContext.Books.Remove(book);
+            _bookContext.SaveChanges();
 
             return NoContent();
         }
