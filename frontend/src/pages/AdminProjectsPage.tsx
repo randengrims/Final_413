@@ -45,19 +45,19 @@ const AdminProjectsPage = () => {
     }
   };
 
-  if (loading) return <p>Loading projects...</p>;
+  if (loading) return <p>Loading books...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
     <div>
-      <h1>Admin - Projects</h1>
+      <h1>Admin - Books</h1>
 
       {!showForm && (
         <button
           className="btn btn-success mb-3"
           onClick={() => setShowForm(true)}
         >
-          Add Project
+          Add Book
         </button>
       )}
 

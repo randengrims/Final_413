@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Project } from '../types/Project';
 import { useNavigate } from 'react-router-dom';
-import { fetchProjects } from '../api/ProjectsAPI';
+import { fetchProjects as fetchBooks } from '../api/ProjectsAPI';
 import Pagination from './Pagination';
 
 function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [books, setBooks] = useState<Project[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -14,11 +14,11 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadProjects = async () => {
+    const loadBooks = async () => {
       try {
         setLoading(true);
-        const data = await fetchProjects(pageSize, pageNum, selectedCategories);
-        setProjects(data.projects);
+        const data = await fetchBooks(pageSize, pageNum, selectedCategories);
+        setBooks(data.projects);
         setTotalPages(Math.ceil(data.totalNumProjects / pageSize));
       } catch (error) {
         setError((error as Error).message);
@@ -27,7 +27,7 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
       }
     };
 
-    loadProjects();
+    loadBooks();
   }, [pageSize, pageNum, selectedCategories]);
 
   if (loading) return <p>Loading books...</p>;
@@ -35,40 +35,43 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
 
   return (
     <>
-      {projects.map((p) => (
-        <div id="projectCard" className="card" key={p.projectId}>
-          <h3 className="card-title">{p.projectName}</h3>
+      {books.map((b) => (
+        <div id="projectCard" className="card" key={b.projectId}>
+          <h3 className="card-title">{b.projectName}</h3>
           <div className="card-body">
             <ul className="list-unstyled">
               <li>
-                <strong>Book ID: </strong>
-                {p.projectType}
+                <strong>Author: </strong>
+                {b.projectType}
               </li>
               <li>
-                <strong>Title: </strong>
-                {p.projectRegionalProgram}
+                <strong>Publisher: </strong>
+                {b.projectRegionalProgram}
               </li>
               <li>
-                <strong>Author </strong>
-                {p.projectImpact} Individuals Served
+                <strong>ISBN: </strong>
+                {b.projectImpact} Individuals Served
               </li>
               <li>
-                <strong>Publisher </strong>
-                {p.projectPhase}
+                <strong>Category: </strong>
+                {b.projectPhase}
               </li>
               <li>
-                <strong>Project Status: </strong>
-                {p.projectFunctionalityStatus}
+                <strong>Pages: </strong>
+                {b.projectFunctionalityStatus}
+              </li>
+              <li>
+                <strong>Price: </strong>
               </li>
             </ul>
 
             <button
               className="btn btn-success"
               onClick={() =>
-                navigate(`/donate/${p.projectName}/${p.projectId}`)
+                navigate(`/donate/${b.projectName}/${b.projectId}`)
               }
             >
-              Donate
+              Add to Cart
             </button>
           </div>
         </div>
