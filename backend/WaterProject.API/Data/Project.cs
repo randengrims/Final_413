@@ -5,7 +5,7 @@ namespace WaterProject.API.Data
     public class Book
     {
         [Key]
-        public int BookID { get; set; }
+        public int BookID { get; set; } // just adding a get makes it a read-only
         [Required]
         public string Title { get; set; }
         public string? Author { get; set; }

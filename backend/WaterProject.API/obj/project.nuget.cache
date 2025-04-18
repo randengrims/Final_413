@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vLiZWit5EtM=",
+  "dgSpecHash": "vb/tJm9Gq2U=",
   "success": true,
-  "projectFilePath": "C:\\Users\\rande\\Documents\\Randen's College Stuff\\IS 413\\TryWaterProject\\WaterProject\\backend\\WaterProject.API\\WaterProject.API.csproj",
+  "projectFilePath": "C:\\Users\\rande\\Documents\\Randen's College Stuff\\IS 413\\Final\\Mission11\\backend\\WaterProject.API\\WaterProject.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rande\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\rande\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

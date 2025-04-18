@@ -3,14 +3,13 @@ using WaterProject.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ✅ Use BooksDbContext with environment-based database switching
+// Use BooksDbContext with environment-based database switching
 builder.Services.AddDbContext<BooksDbContext>(options =>
 {
     var env = builder.Environment.EnvironmentName;
@@ -18,6 +17,7 @@ builder.Services.AddDbContext<BooksDbContext>(options =>
 
     if (env == "Development")
     {
+        // ADD THIS LINE FOR MYSQL: options.UseMySql(config.GetConnectionString("MySqlConnection"), ServerVersion.AutoDetect(config.GetConnectionString("MySqlConnection")));
         // Use SQLite for local development
         options.UseSqlite(config.GetConnectionString("DevConnection"));
     }
@@ -40,7 +40,7 @@ var app = builder.Build();
 
 app.UseCors("AllowReactAppBlah");
 
-// ✅ Optional: Log the current environment for debugging
+// Optional: Log the current environment for debugging
 app.Logger.LogInformation("Running in environment: {env}", app.Environment.EnvironmentName);
 
 // Configure the HTTP request pipeline.
