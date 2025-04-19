@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import WelcomeBand from '../components/WelcomeBand';
+import WelcomeBand from './WelcomePage';
 import { useCart } from '../context/CartContext';
-import { CartItem } from '../types/CartItem';
+import { CartItem } from '../types/EntertainerSummary';
 
 function AddtoCart() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { CartItem } from '../types/CartItem';
+import { CartItem } from '../types/EntertainerSummary';
 
 interface CartContextType {
   cart: CartItem[];
@@ -17,9 +17,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((c) => c.bookID === item.bookID);
       const updatedCart = prevCart.map((c) =>
-        c.bookID === item.bookID
-          ? { ...c, price: c.price + item.price }
-          : c
+        c.bookID === item.bookID ? { ...c, price: c.price + item.price } : c
       );
 
       return existingItem ? updatedCart : [...prevCart, item];

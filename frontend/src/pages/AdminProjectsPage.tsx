@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Book } from '../types/Book';
-import { deleteBook, fetchProjects as fetchBooks } from '../api/BooksAPI';
-import Pagination from '../components/Pagination';
-import NewBookForm from '../components/NewBookForm';
-import EditBookForm from '../components/EditBookForm';
+import { Entertainer } from '../types/Entertainer';
+import {
+  deleteEntertainer,
+  fetchEntertainers as fetchBooks,
+} from '../api/EntertainersAPI';
+import AddEntertainerForm from '../components/AddEntertainerForm';
+import EditEntertainerForm from '../components/EditEntertainerForm';
 
 const AdminBooksPage = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Entertainer[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [showForm, setShowForm] = useState(false);
-  const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const [editingBook, setEditingBook] = useState<Entertainer | null>(null);
 
   useEffect(() => {
     const loadBooks = async () => {
       try {
         const data = await fetchBooks(pageSize, pageNum, []);
-        setBooks(data.books);
-        setTotalPages(Math.ceil(data.totalNumBooks / pageSize));
+        setBooks(data.entertainers);
+        setTotalPages(Math.ceil(data.totalNumEntertainers / pageSize));
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -38,8 +40,8 @@ const AdminBooksPage = () => {
     if (!confirmDelete) return;
 
     try {
-      await deleteBook(bookID);
-      setBooks(books.filter((p) => p.bookID !== bookID));
+      await deleteEntertainer(bookID);
+      setBooks(books.filter((p) => p.entertainerID !== bookID));
     } catch (error) {
       alert('Failed to delete book. Please try again.');
     }
@@ -62,11 +64,11 @@ const AdminBooksPage = () => {
       )}
 
       {showForm && (
-        <NewBookForm
+        <AddEntertainerForm
           onSuccess={() => {
             setShowForm(false);
             fetchBooks(pageSize, pageNum, []).then((data) =>
-              setBooks(data.books)
+              setBooks(data.entertainers)
             );
           }}
           onCancel={() => setShowForm(false)}
@@ -74,12 +76,12 @@ const AdminBooksPage = () => {
       )}
 
       {editingBook && (
-        <EditBookForm
-          project={editingBook}
+        <EditEntertainerForm
+          entertainer={editingBook}
           onSuccess={() => {
             setEditingBook(null);
             fetchBooks(pageSize, pageNum, []).then((data) =>
-              setBooks(data.books)
+              setBooks(data.entertainers)
             );
           }}
           onCancel={() => setEditingBook(null)}
@@ -103,16 +105,20 @@ const AdminBooksPage = () => {
         </thead>
         <tbody>
           {books.map((b) => (
-            <tr key={b.bookID}>
-              <td>{b.bookID}</td>
-              <td>{b.title}</td>
-              <td>{b.author}</td>
-              <td>{b.publisher}</td>
-              <td>{b.isbn}</td>
-              <td>{b.classification}</td>
-              <td>{b.category}</td>
-              <td>{b.pageCount ?? '-'}</td>
-              <td>{b.price !== undefined ? `$${b.price.toFixed(2)}` : '-'}</td>
+            <tr key={b.entertainerID}>
+              <td>{b.entertainerID}</td>
+              <td>{b.entStageName}</td>
+              <td>{b.entSSN}</td>
+              <td>{b.entStreetAddress}</td>
+              <td>{b.entCity}</td>
+              <td>{b.entState}</td>
+              <td>{b.entZipCode}</td>
+              <td>{b.entPhoneNumber ?? '-'}</td>
+              <td>
+                {b.entWebPage !== undefined
+                  ? `$${b.entWebPage.toFixed(2)}`
+                  : '-'}
+              </td>
               <td>
                 <button
                   className="btn btn-primary btn-sm w-100 mb-1"
@@ -122,7 +128,7 @@ const AdminBooksPage = () => {
                 </button>
                 <button
                   className="btn btn-danger btn-sm w-100"
-                  onClick={() => handleDelete(b.bookID)}
+                  onClick={() => handleDelete(b.entertainerID)}
                 >
                   Delete
                 </button>

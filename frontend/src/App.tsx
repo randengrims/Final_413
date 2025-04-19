@@ -1,29 +1,26 @@
 import './App.css';
-import { CartProvider } from './context/CartContext';
-import AdminBooksPage from './pages/AdminProjectsPage';
-import CartPage from './pages/CartPage';
-import AddtoCart from './pages/AddToCartPage';
-import BooksPage from './pages/BooksPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import EntertainerList from './pages/EntertainersList';
+import AddEntertainerForm from './components/AddEntertainerForm';
+import EntertainerDetails from './pages/EntertainerDetails';
+import WelcomePage from './pages/WelcomePage';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
-    <>
-      <CartProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<BooksPage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route
-              path="/addtocart/:title/:bookId/:price"
-              element={<AddtoCart />}
-            />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/adminprojects" element={<AdminBooksPage />} />
-          </Routes>
-        </Router>
-      </CartProvider>
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/entertainers" element={<EntertainerList />} />
+        <Route path="/add-entertainer" element={<AddEntertainerForm />} />
+        <Route
+          path="/entertainer/:entertainerID"
+          element={<EntertainerDetails />}
+        />
+      </Routes>
+    </Router>
   );
 }
 
